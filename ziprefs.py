@@ -1,11 +1,23 @@
-from pygnotero import libzotero
+import pyzotero import zotero
+import importlib.util
 import sys
 
-#this is where zotero lives on your computer
-zotero_folder = "C:\Users\dchan\AppData\Local\Zotero Standalone\"
+#this is where zotero login lives on your computer
+login_file = "C:\Users\dchan\Documents\KEYS\zoterologin.py"
+
+#this is using the import library to set the path to the module and the module name
+spec = importlib.util.spec_from_file_location("zoterologin", login_file)
+keyfile = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(keyfile)
+
+#import the login information
+from keyfile import key, userid
+
+#set variables
+library_type = "user"
 
 #connect to zotero
-zotero = libzotero.libzotero(zotero_folder)
+zot = zotero.Zotero(library_id, library_type, api_key)
 
 #We assume that the search term has been specified as the first argument on the command line
 term = sys.argv[1]
