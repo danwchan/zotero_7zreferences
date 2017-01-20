@@ -1,4 +1,4 @@
-import pyzotero import zotero
+from pyzotero import zotero
 import importlib.util
 import sys
 
@@ -11,10 +11,10 @@ keyfile = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(keyfile)
 
 #import the login information
-from keyfile import key, userid
+from keyfile import apikey, library_id, library_type
 
 #set variables
-library_type = "user"
+
 
 #connect to zotero
 zot = zotero.Zotero(library_id, library_type, api_key)
@@ -23,11 +23,11 @@ zot = zotero.Zotero(library_id, library_type, api_key)
 term = sys.argv[1]
 
 #Search!
-results = zotero.search(term)
+results = zot.top(limit = term)
 
 #How many results are there?
 print "%d results for %s" % (len(results), term)
 
-#Loop through the results and print them in simple format. libzotero.search() returns a list of zotero_item objects. (For more information about the zotero_item class, see pygnotero.zotero_item in the source code.)
+#Loop through the results and print the item type and ID
 for item in results:
-    print item.simple_format()
+    print('Item Type: %s | Key: %s' % (item['data']['itemType'], item['data']['key']))
