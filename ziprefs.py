@@ -3,21 +3,24 @@ import importlib.util
 import sys
 
 #this is where zotero login lives on your computer
-login_file = "C:\Users\dchan\Documents\KEYS\zoterologin.py"
+login_file = "C:\\Users\\dchan\\Documents\\KEYS\\zoterologin.py"
 
 #this is using the import library to set the path to the module and the module name
 spec = importlib.util.spec_from_file_location("zoterologin", login_file)
-keyfile = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(keyfile)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+
+#map the module to sys
+sys.module["zoterologin"] = module
 
 #import the login information
-from keyfile import apikey, library_id, library_type
+from zoterologin import apikey, library_id, library_type
 
 #set variables
 
 
 #connect to zotero
-zot = zotero.Zotero(library_id, library_type, api_key)
+zot = zotero.Zotero(library_id, library_type, apikey)
 
 #We assume that the search term has been specified as the first argument on the command line
 term = sys.argv[1]
@@ -26,8 +29,8 @@ term = sys.argv[1]
 results = zot.top(limit = term)
 
 #How many results are there?
-print "%d results for %s" % (len(results), term)
+print ("%d results for %s" % (len(results), term))
 
 #Loop through the results and print the item type and ID
 for item in results:
-    print('Item Type: %s | Key: %s' % (item['data']['itemType'], item['data']['key']))
+    print("Item Type: %s | Key: %s" % (item['data']['itemType'], item['data']['key']))
