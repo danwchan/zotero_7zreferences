@@ -1,6 +1,7 @@
 from pyzotero import zotero
 import importlib.util
 import sys
+import subprocess
 
 #this is where zotero login lives on your computer
 login_file = "C:\\Users\\dchan\\Documents\\KEYS\\zoterologin.py"
@@ -11,13 +12,15 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
 #map the module to sys
-sys.module["zoterologin"] = module
+sys.modules["zoterologin"] = module
 
 #import the login information
 from zoterologin import apikey, library_id, library_type
 
 #set variables
 
+testfile = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\testpdf.pdf"
+testarchive = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\test.zip"
 
 #connect to zotero
 zot = zotero.Zotero(library_id, library_type, apikey)
@@ -34,3 +37,6 @@ print ("%d results for %s" % (len(results), term))
 #Loop through the results and print the item type and ID
 for item in results:
     print("Item Type: %s | Key: %s" % (item['data']['itemType'], item['data']['key']))
+	
+#test zip
+subprocess.Popen("C:\Program Files\7-Zip\7zFM.exe a %s %s" % (testarchive, testfile),stdout=subprocess.PIPE)
