@@ -19,6 +19,7 @@ from zoterologin import apikey, library_id, library_type
 
 #set variables, defaults to some test files
 filepaths = []
+searchcollection = "Baseline_characteristics"
 testfile = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\testpdf.pdf"
 archive = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\test.zip"
 ziplocation = "C:\\Program Files\\7-Zip\\7zG.exe"
@@ -45,17 +46,10 @@ collectionsitems = zot.collection_items(searchID)
 for item in collectionsitems:
     if item['data'].get('linkMode') == "linked_file":
 	    filepaths.append(item['data'].get('path'))
-
-#Search!
-results = zot.top(limit = term)
-
-#How many results are there?
-print ("%d results for %s" % (len(results), term))
-
-#Loop through the results and print the item type and ID
-for item in results:
-    print("Item Type: %s | Key: %s" % (item['data']['itemType'], item['data']['key']))
 	
 #zip up the filepaths
 for path in filepaths:
     subprocess.run("\"%s\" a \"%s\" \"%s\"" % (ziplocation, archive, path),stdout=subprocess.PIPE)
+	
+#sanity check
+print ("%d references from the %s collection (%s) have been retrived and zipped into \n %s" % (len(filepaths), searchcollection, searchID, archive))
