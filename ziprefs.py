@@ -17,10 +17,10 @@ sys.modules["zoterologin"] = module
 #import the login information
 from zoterologin import apikey, library_id, library_type
 
-#set variables
+#set variables, defaults to some test files
 filepaths = []
 testfile = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\testpdf.pdf"
-testarchive = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\test.zip"
+archive = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\test.zip"
 ziplocation = "C:\\Program Files\\7-Zip\\7zG.exe"
 
 #connect to zotero
@@ -31,6 +31,7 @@ collections = zot.collections()
 
 #We assume that the search term has been specified as the first argument on the command line
 searchcollection = sys.argv[1]
+archive = sys.argv[2]
 
 #find the collectionID for the specified collection
 for item in collections:
@@ -55,5 +56,6 @@ print ("%d results for %s" % (len(results), term))
 for item in results:
     print("Item Type: %s | Key: %s" % (item['data']['itemType'], item['data']['key']))
 	
-#test zip
-subprocess.run("\"%s\" a \"%s\" \"%s\"" % (ziplocation, testarchive, testfile),stdout=subprocess.PIPE)
+#zip up the filepaths
+for path in filepaths:
+    subprocess.run("\"%s\" a \"%s\" \"%s\"" % (ziplocation, archive, path),stdout=subprocess.PIPE)
