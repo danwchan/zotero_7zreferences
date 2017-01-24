@@ -26,8 +26,19 @@ ziplocation = "C:\\Program Files\\7-Zip\\7zG.exe"
 #connect to zotero
 zot = zotero.Zotero(library_id, library_type, apikey)
 
+#retrieve the collections
+collections = zot.collections()
+
 #We assume that the search term has been specified as the first argument on the command line
-term = sys.argv[1]
+searchcollection = sys.argv[1]
+
+#find the collectionID for the specified collection
+for item in collections:
+    if item['data']['name'] == searchcollection:
+	    searchID = item['data']['key']
+
+#get the path to the files for the collection ID
+collectionfiles = zot.collection_items
 
 #Search!
 results = zot.top(limit = term)
