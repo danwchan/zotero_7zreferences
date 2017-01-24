@@ -37,8 +37,11 @@ for item in collections:
     if item['data']['name'] == searchcollection:
 	    searchID = item['data']['key']
 
-#get the path to the files for the collection ID
-collectionfiles = zot.collection_items
+#get the items corresponding to the collectionID
+collectionfiles = zot.collection_items(searchID)
+
+#get the path to the files for the items
+collectionfiles
 
 #Search!
 results = zot.top(limit = term)
