@@ -21,6 +21,7 @@ from zoterologin import apikey, library_id, library_type
 
 testfile = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\testpdf.pdf"
 testarchive = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\test.zip"
+ziplocation = "C:\\Program Files\\7-Zip\\7zG.exe"
 
 #connect to zotero
 zot = zotero.Zotero(library_id, library_type, apikey)
@@ -39,4 +40,4 @@ for item in results:
     print("Item Type: %s | Key: %s" % (item['data']['itemType'], item['data']['key']))
 	
 #test zip
-subprocess.Popen("C:\Program Files\7-Zip\7zFM.exe a %s %s" % (testarchive, testfile),stdout=subprocess.PIPE)
+subprocess.run("\"%s\" a \"%s\" \"%s\"" % (ziplocation, testarchive, testfile),stdout=subprocess.PIPE)
