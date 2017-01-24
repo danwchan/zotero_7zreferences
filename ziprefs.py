@@ -18,7 +18,7 @@ sys.modules["zoterologin"] = module
 from zoterologin import apikey, library_id, library_type
 
 #set variables
-
+filepaths = []
 testfile = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\testpdf.pdf"
 testarchive = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\test.zip"
 ziplocation = "C:\\Program Files\\7-Zip\\7zG.exe"
@@ -38,10 +38,12 @@ for item in collections:
 	    searchID = item['data']['key']
 
 #get the items corresponding to the collectionID
-collectionfiles = zot.collection_items(searchID)
+collectionsitems = zot.collection_items(searchID)
 
-#get the path to the files for the items
-collectionfiles
+#get the path to the files for the items which are linked items
+for item in collectionsitems:
+    if item['data'].get('linkMode') == "linked_file":
+	    filepaths.append(item['data'].get('path'))
 
 #Search!
 results = zot.top(limit = term)
