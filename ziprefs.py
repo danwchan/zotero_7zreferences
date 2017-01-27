@@ -19,6 +19,7 @@ from zoterologin import apikey, library_id, library_type
 
 #set variables, defaults to some test files
 prompt = "> "
+confirm = "n"
 filepaths = []
 searchID = "empty"
 searchcollection = "empty"
@@ -43,7 +44,7 @@ while searchID == "empty":
         if item['data']['name'] == searchcollection:
             searchID = item['data']['key']
     if searchID == "empty":
-        print ("\n could not find %s in the zotero library \n reenter the collection \n" % (searchcollection))
+        print ("\n could not find %s in the zotero library \n reenter the collection" % (searchcollection))
         searchcollection = input(prompt)
 #    else:
 #        print ("D'oh! some other error")
@@ -55,6 +56,12 @@ collectionsitems = zot.collection_items(searchID)
 for item in collectionsitems:
     if item['data'].get('linkMode') == "linked_file":
 	    filepaths.append(item['data'].get('path'))
+
+#Ask for the place to put the files
+print ("\n Where would you like to save this .zip file?")
+while confirm == "n":
+    archivepath = input(prompt)
+    print ("You said")
 
 #zip up the filepaths
 for path in filepaths:
