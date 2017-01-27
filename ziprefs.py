@@ -58,10 +58,17 @@ for item in collectionsitems:
 	    filepaths.append(item['data'].get('path'))
 
 #Ask for the place to put the files
-print ("\n Where would you like to save this .zip file?")
-while confirm == "n":
+while confirm != "y":
+    fileparts = []
+    print ("\n Where would you like to save this .zip file? (dont for get the trailing \)")
     archivepath = input(prompt)
-    print ("You said")
+    fileparts.extend([archivepath, searchcollection, "_references.zip"])
+    archive = "".join(fileparts)
+    print ("You want this file to be saved as: \n\n \t %s \n\n Is that correct? (y/n)" % (archive))
+    confirm = input(prompt)
+    if confirm == "y":
+        break
+print ("\n GREAT! let's zip it up")
 
 #zip up the filepaths
 for path in filepaths:
