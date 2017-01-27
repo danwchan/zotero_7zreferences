@@ -19,6 +19,7 @@ from zoterologin import apikey, library_id, library_type
 
 #set variables, defaults to some test files
 filepaths = []
+serachID = "empty"
 searchcollection = "Baseline_characteristics"
 testfile = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\testpdf.pdf"
 archive = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\test.zip"
@@ -37,8 +38,10 @@ archive = sys.argv[2]
 #find the collectionID for the specified collection
 for item in collections:
     if item['data']['name'] == searchcollection:
-	    searchID = item['data']['key']
-
+        searchID = item['data']['key']
+if searchID == "empty":
+    print ("could not find %s in the zotero library" % (searchcollection))
+	
 #get the items corresponding to the collectionID
 collectionsitems = zot.collection_items(searchID)
 
