@@ -50,7 +50,7 @@ while searchID == "empty":
 #        print ("D'oh! some other error")
 
 #get the items corresponding to the collectionID
-collectionsitems = zot.collection_items(searchID)
+collectionsitems = zot.everything(zot.collection_items(searchID, itemType='attachment'))
 
 #get the path to the files for the items which are linked items
 for item in collectionsitems:
