@@ -21,6 +21,8 @@ from zoterologin import apikey, library_id, library_type
 prompt = "> "
 confirm = "n"
 filepaths = []
+foundcount = dict()
+noparent = []
 searchID = "empty"
 searchcollection = "empty"
 testfile = "C:\\Users\\dchan\\Documents\\Abbvie\\Humira\\Old_refs\\testpdf.pdf"
@@ -49,13 +51,34 @@ while searchID == "empty":
 #    else:
 #        print ("D'oh! some other error")
 
-#get the items corresponding to the collectionID
-collectionsitems = zot.everything(zot.collection_items(searchID, itemType='attachment'))
+#get the attachement items corresponding to the collectionID
+attachments = zot.everything(zot.collection_items(searchID, itemType='attachment'))
+
+#get the non_attachment items corresponding to the collectionID
+otheritems = zot.everything(zot.collection_items(searchID, itemType='-attachment'))
 
 #get the path to the files for the items which are linked items
-for item in collectionsitems:
+for item in attachments:
     if item['data'].get('linkMode') == "linked_file":
-	    filepaths.append(item['data'].get('path'))
+        filepaths.append(item['data'].get('path'))
+        parent = item['data'].get('parentItem')
+#track the parent key for each item, if no parent then log
+        if not parent:
+            noparent.append(item['data'].get('title'))
+#create a tally for multiples 
+        else:
+            foundcount[parent] = foundcount.get(parent, 0) + 1
+
+#sanity check
+print ("\n %d files have been found for %d references from the %s collection (%s)" % (len(filepaths), len(otheritems), searchcollection, searchID))
+import pdb; pdb.set_trace()
+for item, files in foundcount.items():
+    if files >= 2:
+        print("got one")
+#        print("\n %d files associated with %s" % (files, otheritems[item].get(otheritems['data'].get('title'))))
+print ("\n The following files to be added to the zip archive have no parent reference:")
+for item in noparent:
+    print("\n %s" % (item))
 
 #Ask for the place to put the files
 while confirm != "y":
@@ -73,6 +96,6 @@ print ("\n GREAT! let's zip it up")
 #zip up the filepaths
 for path in filepaths:
     subprocess.run("\"%s\" a \"%s\" \"%s\"" % (ziplocation, archive, path),stdout=subprocess.PIPE)
-	
-#sanity check
-print ("\n %d references from the %s collection (%s) have been retrived and zipped into \n\n \t %s" % (len(filepaths), searchcollection, searchID, archive))
+
+#sanity check confirmation
+print ("\n %d references from the %s collection have been retrived and zipped into \n\n \t %s" % (len(filepaths), searchcollection, archive))
