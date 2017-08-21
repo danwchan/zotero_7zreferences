@@ -90,11 +90,9 @@ for found in [item['data'].get('title') for item in otheritems if item['key'] no
 
 #Ask for the place to put the files
 while confirm != "y":
-    fileparts = []
-    print ("\n Where would you like to save this .zip file? (dont for get the trailing \)")
+    print ("\n Where would you like to save this .zip file?")
     archivepath = input(prompt)
-    fileparts.extend([archivepath, searchcollection, "_references.zip"])
-    archive = "".join(fileparts)
+    archive = "".join([archivepath, "\\", searchcollection, "_references.zip"])
     print ("You want this file to be saved as: \n\n \t %s \n\n Is that correct? (y/n)" % (archive))
     confirm = input(prompt)
     if confirm == "y":
