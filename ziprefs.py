@@ -71,14 +71,22 @@ for item in attachments:
 
 #sanity check
 print ("\n %d files have been found for %d references from the %s collection (%s)" % (len(filepaths), len(otheritems), searchcollection, searchID))
-import pdb; pdb.set_trace()
 for item, files in foundcount.items():
+
     if files >= 2:
-        print("got one")
-#        print("\n %d files associated with %s" % (files, otheritems[item].get(otheritems['data'].get('title'))))
-print ("\n The following files to be added to the zip archive have no parent reference:")
-for item in noparent:
-    print("\n %s" % (item))
+# the generator function as the first string looks over the otheritems list and gets the title from the key provided by item
+        print("\n The reference titled '{0}' has {1} files assocated with it".format(next((i for i in otheritems if i['key'] == item))['data'].get('title'), files))
+
+# a loop to print the items in noparent
+print("\n The following files to be added to the zip archive have no parent reference: \n")
+for orphan in noparent:
+    print(orphan)
+
+#a list and printing for a set of items which do not have files associated with them
+print("\n The following references have no associated file to add: \n")
+foundlist = [keys for keys, count in foundcount.items()]
+for found in [item['data'].get('title') for item in otheritems if item['key'] not in foundlist]:
+    print(found)
 
 #Ask for the place to put the files
 while confirm != "y":
@@ -98,4 +106,4 @@ for path in filepaths:
     subprocess.run("\"%s\" a \"%s\" \"%s\"" % (ziplocation, archive, path),stdout=subprocess.PIPE)
 
 #sanity check confirmation
-print ("\n %d references from the %s collection have been retrived and zipped into \n\n \t %s" % (len(filepaths), searchcollection, archive))
+print ("\n %d references from the %s collection have been retrived and zipped into \n \t %s" % (len(filepaths), searchcollection, archive))
